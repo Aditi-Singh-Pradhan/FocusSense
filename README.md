@@ -137,8 +137,8 @@ App Activity Tracker ───────────────────�
 ## Roadmap
 
 - [x] System architecture & design
-- [ ] CV Engine — face presence & blink detection
-- [ ] App activity tracker
+- [x] CV Engine — face presence & blink detection
+- [x] App activity tracker
 - [ ] Focus score computation
 - [ ] CSV data logging
 - [ ] Live dashboard

@@ -1,3 +1,10 @@
+"""
+Activity tracker for monitoring active applications.
+
+Detects the currently active window and categorizes it
+as productive, distracting, or neutral.
+"""
+
 import pygetwindow as gw
 
 class ActivityTracker:

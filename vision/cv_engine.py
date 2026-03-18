@@ -1,3 +1,10 @@
+"""
+Computer Vision engine using MediaPipe.
+
+Extracts attention-related signals from webcam frames,
+including face presence, head direction, and blink metrics.
+"""
+
 import cv2
 import mediapipe as mp
 

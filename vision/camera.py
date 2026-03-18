@@ -1,3 +1,9 @@
+"""
+Camera module for real-time webcam capture.
+
+Runs a threaded video stream and provides the latest frame
+for processing without blocking the main application.
+"""
 
 import cv2
 import threading

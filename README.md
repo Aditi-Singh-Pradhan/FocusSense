@@ -95,7 +95,7 @@ The `data/` folder will be created automatically on first run.
 
 ```
 Webcam Feed ──────────────────────────────────────────┐
-                                                       |
+                                                      |
                                              CV Engine (MediaPipe)
                                              - Face presence
                                              - Head direction
@@ -139,7 +139,7 @@ App Activity Tracker ───────────────────�
 - [x] System architecture & design
 - [x] CV Engine — face presence & blink detection
 - [x] App activity tracker
-- [ ] Focus score computation
+- [x] Focus score computation
 - [ ] CSV data logging
 - [ ] Live dashboard
 - [ ] Alert system

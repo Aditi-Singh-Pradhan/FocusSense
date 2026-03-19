@@ -27,7 +27,7 @@ def main():
                 continue
 
             cv_data = cv_engine.process_frame(frame)
-            activity_data = activity_tracker.get_activity()
+            activity_data = activity_tracker.get_activity_score()
 
             focus_score = behavior_engine.compute_focus_score(cv_data, activity_data)
 

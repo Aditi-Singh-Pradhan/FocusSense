@@ -1,24 +1,9 @@
-"""
-Main application entry point. 
-Runs the full FocusSense pipeline: 
-Camera → CV Engine → Activity Tracker → Behavior Engine 
-"""
-
-from vision.camera import Camera
-from core.behavior import BehaviorEngine    
-from tracker.activity import ActivityTracker
-from vision.cv_engine import CVEngine
-
-import time
-import cv2
-
-
 def main():
-    # Initialize components
     camera = Camera().start()
     cv_engine = CVEngine()
     activity_tracker = ActivityTracker()
     behavior_engine = BehaviorEngine()
+    app = App()
 
     try:
         while True:
@@ -27,11 +12,17 @@ def main():
                 continue
 
             cv_data = cv_engine.process_frame(frame)
-            activity_data = activity_tracker.get_activity_score()
+
+            # unpack tuple
+            category, score = activity_tracker.get_activity_score()
+            activity_data = score
 
             focus_score = behavior_engine.compute_focus_score(cv_data, activity_data)
 
-            # show score on screen
+            # UPDATE UI
+            app.update_score(focus_score)
+
+            # OPTIONAL: keep camera window for now
             cv2.putText(frame, f"Focus Score: {focus_score}", (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
@@ -45,8 +36,3 @@ def main():
     finally:
         camera.stop()
         cv2.destroyAllWindows()
-
-
-if __name__ == "__main__":
-    main()
-

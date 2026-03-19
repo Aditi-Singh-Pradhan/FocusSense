@@ -24,8 +24,8 @@ class BehaviorEngine:
         focus_score = (
             face * 0.4 + 
             head * 0.3 + 
-            blink_score * 
-            0.2 + app * 0.1    
+            blink_score * 0.2 + 
+            app * 0.1    
         )
 
         return round(focus_score * 100, 2)

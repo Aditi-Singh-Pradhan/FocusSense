@@ -127,9 +127,15 @@ class FocusModeScreen(tk.Frame):
         # Convert BGR → RGB
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
-        # Convert to PIL image
+        # Convert to PIL image ,  adaptive resizing
         img = Image.fromarray(frame)
-        img = img.resize((500, 350))              # Resize to fit label
+
+        h, w, _ = frame.shape
+        scale = 400 / w
+        new_w = 400
+        new_h = int(h * scale)
+
+        img = img.resize((new_w, new_h))              # Resize to fit label
 
         # Convert to Tkinter image
         imgtk = ImageTk.PhotoImage(image=img)

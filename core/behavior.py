@@ -15,7 +15,7 @@ class BehaviorEngine:
         face = cv_data.get("face")        
         head = cv_data.get("head")   
         blink = cv_data.get("blink")
-        app = activity_data.get("score") 
+        app = activity_data 
 
         # normalise blink (for fatgiue detection)
         blink_score = max(0, 1 - blink * 10)
@@ -27,6 +27,12 @@ class BehaviorEngine:
             blink_score * 0.2 + 
             app * 0.1    
         )
+
+        if not hasattr(self, "prev_score"):
+            self.prev_score = focus_score
+
+        focus_score = 0.7 * self.prev_score + 0.3 * focus_score
+        self.prev_score = focus_score
 
         return round(focus_score * 100, 2)
         

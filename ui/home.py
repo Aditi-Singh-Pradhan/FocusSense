@@ -1,4 +1,6 @@
 import tkinter as tk
+from ui.focusmode import FocusModeScreen
+
 
 
 class HomeScreen(tk.Frame):
@@ -11,6 +13,6 @@ class HomeScreen(tk.Frame):
         tk.Button(
             self,
             text="Start Focus Mode",
-            command=lambda: controller.show(controller.frames.keys().__iter__().__next__().__class__)
+            command=lambda: controller.show(FocusModeScreen)
         ).pack(pady=10)
 

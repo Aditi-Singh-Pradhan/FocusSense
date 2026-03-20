@@ -1,9 +1,19 @@
-def main():
+import threading
+import time
+import cv2
+
+from vision.camera import Camera
+from vision.cv_engine import CVEngine
+from tracker.activity import ActivityTracker
+from core.behavior import BehaviorEngine
+from ui.app import App
+
+
+def run_cv_loop(app):
     camera = Camera().start()
     cv_engine = CVEngine()
     activity_tracker = ActivityTracker()
     behavior_engine = BehaviorEngine()
-    app = App()
 
     try:
         while True:
@@ -13,16 +23,15 @@ def main():
 
             cv_data = cv_engine.process_frame(frame)
 
-            # unpack tuple
             category, score = activity_tracker.get_activity_score()
             activity_data = score
 
             focus_score = behavior_engine.compute_focus_score(cv_data, activity_data)
 
-            # UPDATE UI
+            # update UI safely
             app.update_score(focus_score)
 
-            # OPTIONAL: keep camera window for now
+            # (optional debug window)
             cv2.putText(frame, f"Focus Score: {focus_score}", (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
@@ -31,8 +40,20 @@ def main():
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break
 
-            time.sleep(0.1)
-
     finally:
         camera.stop()
         cv2.destroyAllWindows()
+
+
+def main():
+    app = App()
+
+    # Run CV in separate thread
+    threading.Thread(target=run_cv_loop, args=(app,), daemon=True).start()
+
+    #Run UI properly
+    app.run()
+
+
+if __name__ == "__main__":
+    main()

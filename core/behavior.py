@@ -9,7 +9,7 @@ class BehaviorEngine:
     def __init__(self):
         pass
 
-    def compute_focus_score(self, cv_data, activity_data):
+    def compute_focus_score(self, cv_data, activity_data):                    # helper function to compute focus score based on CV data and activity data
 
         #factors from computer vision
         face = cv_data.get("face")        

@@ -9,7 +9,7 @@ import cv2
 import threading
 
 
-class Camera:
+class Camera:                      
     def __init__(self, src=0):
         self.src = src
         self.cap = cv2.VideoCapture(self.src)

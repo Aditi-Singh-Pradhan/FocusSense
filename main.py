@@ -11,19 +11,19 @@ from ml.cv_logger import CVLogger
 
 
 def run_cv_loop(app):
-    camera = Camera().start()
-    cv_engine = CVEngine()
-    logger = CVLogger()
-    activity_tracker = ActivityTracker()
-    behavior_engine = BehaviorEngine()
+    camera = Camera().start()                       # Start camera feed
+    cv_engine = CVEngine()                          # Initialize CV engine
+    logger = CVLogger()                             # Initialize CV logger
+    activity_tracker = ActivityTracker()            # Initialize activity tracker
+    behavior_engine = BehaviorEngine()              # Initialize behavior engine
 
     try:
         while True:
-            frame = camera.get_frame()
+            frame = camera.get_frame()                          # Get latest camera frame
             if frame is None:
                 continue
 
-            cv_data = cv_engine.process_frame(frame)
+            cv_data = cv_engine.process_frame(frame)             # Extract CV features (face, head, blink)
 
             # Get activity score
             category, score = activity_tracker.get_activity_score()

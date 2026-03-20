@@ -7,7 +7,7 @@ as productive, distracting, or neutral.
 
 import pygetwindow as gw
 
-class ActivityTracker:
+class ActivityTracker:                                                              # Monitors active applications and categorizes them for focus scoring
     def __init__(self):
         self.productive_apps = ["Visual Studio Code", "Brave Browser"]
         self.distracting_apps = ["Spotify", "YouTube"]
@@ -21,7 +21,7 @@ class ActivityTracker:
         except:
             return "Unknown"
 
-    def categorize_app(self, title):
+    def categorize_app(self, title):                                                # Simple keyword matching to categorize active window, returns category and score
         title = title.lower()
 
         for app in self.productive_apps:
@@ -34,7 +34,7 @@ class ActivityTracker:
 
         return "Neutral", 0.5
 
-    def get_activity_score(self):
+    def get_activity_score(self):                                                   # Main function to get current activity score based on active window
         title = self.get_activity_window()
         category, score = self.categorize_app(title)
         return category, score

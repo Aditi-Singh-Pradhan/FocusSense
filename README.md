@@ -59,6 +59,8 @@ focussense/
 ├── ml/
 │   ├── data_logger.py      # Logs signals to CSV
 │   └── predictor.py        # Attention pattern predictor
+    └── dataset/
+|           └── focus_log.csv
 ├── ui/
 │   └── dashboard.py        # Live dashboard UI
 └── data/                   # Auto-created on first run
@@ -140,8 +142,8 @@ App Activity Tracker ───────────────────�
 - [x] CV Engine — face presence & blink detection
 - [x] App activity tracker
 - [x] Focus score computation
-- [ ] CSV data logging
-- [ ] Live dashboard
+- [x] CSV data logging
+- [x] Live dashboard
 - [ ] Alert system
 - [ ] Adaptive timer (rule-based)
 - [ ] ML predictor (pattern-based)

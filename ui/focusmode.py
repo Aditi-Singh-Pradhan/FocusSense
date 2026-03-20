@@ -10,6 +10,8 @@ Displays:
 """
 
 import tkinter as tk
+from PIL import Image, ImageTk 
+import cv2
 
 
 class FocusModeScreen(tk.Frame):
@@ -28,10 +30,7 @@ class FocusModeScreen(tk.Frame):
         self.camera_label = tk.Label(
             top_frame,
             text="Camera Feed",
-            width=30,
-            height=10,
             bg="black",
-            fg="white"
         )
         self.camera_label.grid(row=0, column=0, padx=10)
 
@@ -121,6 +120,23 @@ class FocusModeScreen(tk.Frame):
             self.message_label.config(text="Great focus! Keep it up.")
 
         self.update()
+    
+    # ---------- UPDATE CAMERA ----------
+
+    def update_camera(self, frame):
+        # Convert BGR → RGB
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
+        # Convert to PIL image
+        img = Image.fromarray(frame)
+        img = img.resize((500, 350))              # Resize to fit label
+
+        # Convert to Tkinter image
+        imgtk = ImageTk.PhotoImage(image=img)
+
+        # Show in label
+        self.camera_label.config(image=imgtk, text="")
+        self.camera_label.image = imgtk
 
     # ---------- BACK ----------
     def go_back(self):

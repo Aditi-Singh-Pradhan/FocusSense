@@ -28,6 +28,8 @@ def run_cv_loop(app):
 
             focus_score = behavior_engine.compute_focus_score(cv_data, activity_data)
 
+            app.update_camera(frame)
+
             # update UI safely
             app.update_score(focus_score)
 
@@ -35,7 +37,7 @@ def run_cv_loop(app):
             cv2.putText(frame, f"Focus Score: {focus_score}", (10, 30),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
 
-            cv2.imshow("FocusSense", frame)
+            
 
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 break

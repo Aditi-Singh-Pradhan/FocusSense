@@ -11,6 +11,7 @@ from ui.focusmode import FocusModeScreen
 from ui.stats import StatsScreen
 
 
+
 class App:
     def __init__(self):
         self.root = tk.Tk()
@@ -31,6 +32,10 @@ class App:
 
     def show(self, screen):
         self.frames[screen].tkraise()
+
+    def update_camera(self, frame):
+
+        self.frames[FocusModeScreen].update_camera(frame)
 
     def update_score(self, score):
         self.frames[FocusModeScreen].update_score(score)

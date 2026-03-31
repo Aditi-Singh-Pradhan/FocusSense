@@ -8,12 +8,6 @@ class HomeScreen(tk.Frame):
 
         tk.Label(self, text="FocusSense", font=("Helvetica", 24)).pack(pady=20)
 
-        # View stats button
-        tk.Button(
-            self,
-            text="View Stats",
-            command=lambda: controller.show(StatsScreen)
-        ).pack(pady=10)
 
         # SUBJECT SELECTOR 
         tk.Label(self, text="What are you studying?").pack()

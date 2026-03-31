@@ -23,7 +23,15 @@ class App:
         
         self.current_subject = "General"   # ✅ default value
 
+        # Create menu bar
+        menubar = tk.Menu(self.root) 
 
+        menu = tk.Menu(menubar, tearoff=0) 
+        menu.add_command(label="Home", command=lambda: self.show(HomeScreen)) 
+        menu.add_command(label="Stats", command=lambda: self.show(StatsScreen)) 
+        menubar.add_cascade(label="Menu", menu=menu)
+
+        self.root.config(menu=menubar)
 
         self.frames = {}
 

@@ -20,6 +20,10 @@ class App:
 
         self.container = tk.Frame(self.root)
         self.container.pack(fill="both", expand=True)
+        
+        self.current_subject = "General"   # ✅ default value
+
+
 
         self.frames = {}
 

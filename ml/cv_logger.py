@@ -7,6 +7,7 @@ class CVLogger:
     def __init__(self, filename="ml/dataset/focus_log.csv"):                                 # Initialize logger with filename and buffer
         self.filename = filename
         self.interval = 30
+        self.start_time = time.time()
 
         self.buffer = []
         self.last_log_time = time.time()
@@ -23,10 +24,11 @@ class CVLogger:
                     "face",
                     "head",
                     "blink",
-                    "focus_score"
+                    "focus_score",
+                    "subject"
                 ])
 
-    def log(self, cv_data, focus_score):                                                    # Add CV data and focus score to buffer, flush if interval has passed
+    def log(self, cv_data, focus_score, subject):                                                    # Add CV data and focus score to buffer, flush if interval has passed
         self.buffer.append((cv_data, focus_score))
 
         current_time = time.time()

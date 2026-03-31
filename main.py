@@ -2,6 +2,7 @@ import threading
 import time
 import cv2
 
+from ui import app
 from vision.camera import Camera
 from vision.cv_engine import CVEngine
 from tracker.activity import ActivityTracker
@@ -29,9 +30,11 @@ def run_cv_loop(app):
             category, score = activity_tracker.get_activity_score()
             activity_data = score
             focus_score = behavior_engine.compute_focus_score(cv_data, activity_data)
+            subject = app.current_subject
 
             #csv logging
-            logger.log(cv_data, focus_score)
+            logger.log(cv_data, focus_score, subject)
+            
 
             # Update UI
             app.update_camera(frame)

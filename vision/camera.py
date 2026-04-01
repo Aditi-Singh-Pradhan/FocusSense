@@ -7,6 +7,7 @@ for processing without blocking the main application.
 
 import cv2
 import threading
+import time
 
 
 class Camera:                      
@@ -16,6 +17,10 @@ class Camera:
 
         if not self.cap.isOpened():
             raise RuntimeError("Could not open webcam")
+        
+        #set resolution(imp for performance)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
 
         self.frame = None
         self.running = False
@@ -29,6 +34,10 @@ class Camera:
         self.running = True
         self.thread = threading.Thread(target=self.update, daemon=True)
         self.thread.start()
+
+        #small warmup delay
+        time.sleep(0.5)
+
         return self
 
     def update(self):
@@ -40,6 +49,9 @@ class Camera:
 
             with self.lock:
                 self.frame = frame
+
+            #control frame rate (optional)
+            time.sleep(0.03)   # ~30 FPS cap
 
     def get_frame(self):
         #Return latest frame safely

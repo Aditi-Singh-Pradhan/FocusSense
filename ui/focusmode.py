@@ -144,6 +144,32 @@ class FocusModeScreen(tk.Frame):
         self.camera_label.config(image=imgtk, text="")
         self.camera_label.image = imgtk
 
+    # ---------- BREAK SUGGESTION POPUP ----------
+    def show_break_popup(self):
+        popup = tk.Toplevel(self)
+        popup.title("Break Suggestion")
+        popup.geometry("300x150")
+
+        tk.Label(
+            popup,
+            text="You seem fatigued.\nTake a break?",
+            font=("Helvetica", 12)
+        ).pack(pady=20)
+
+        tk.Button(
+            popup,
+            text="Take Break",
+            command=popup.destroy
+        ).pack(side="left", padx=20, pady=10)
+
+        tk.Button(
+            popup,
+            text="Continue",
+            command=popup.destroy
+        ).pack(side="right", padx=20, pady=10)
+
+
+
     # ---------- BACK ----------
     def go_back(self):
         from ui.home import HomeScreen

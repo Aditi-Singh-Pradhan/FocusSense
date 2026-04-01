@@ -1,8 +1,7 @@
 """
-Contains the main application class that initializes the Tkinter window and manages screen transitions.
-
+Main application class for FocusSense.
+Handles window, navigation, and screen management with sidebar UI.
 """
-
 
 import tkinter as tk
 
@@ -11,28 +10,59 @@ from ui.focusmode import FocusModeScreen
 from ui.stats import StatsScreen
 
 
-
 class App:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("FocusSense")
         self.root.geometry("900x600")
 
-        self.container = tk.Frame(self.root)
-        self.container.pack(fill="both", expand=True)
-        
-        self.current_subject = "General"   # ✅ default value
+        self.current_subject = "General"   # default value
 
-        # Create menu bar
-        menubar = tk.Menu(self.root) 
+        # -------- MAIN LAYOUT --------
+        main_frame = tk.Frame(self.root)
+        main_frame.pack(fill="both", expand=True)
 
-        menu = tk.Menu(menubar, tearoff=0) 
-        menu.add_command(label="Home", command=lambda: self.show(HomeScreen)) 
-        menu.add_command(label="Stats", command=lambda: self.show(StatsScreen)) 
-        menubar.add_cascade(label="Menu", menu=menu)
+        # -------- SIDEBAR --------
+        sidebar = tk.Frame(main_frame, width=150, bg="#222")
+        sidebar.pack(side="left", fill="y")
 
-        self.root.config(menu=menubar)
+        # -------- CONTENT AREA --------
+        self.container = tk.Frame(main_frame)
+        self.container.pack(side="right", fill="both", expand=True)
 
+        # -------- SIDEBAR BUTTONS --------
+        btn_style = {
+            "fg": "white",
+            "bg": "#222",
+            "activebackground": "#444",
+            "bd": 0,
+            "font": ("Helvetica", 12),
+            "anchor": "w",
+            "padx": 10
+        }
+
+        tk.Button(
+            sidebar,
+            text="Home",
+            command=lambda: self.show(HomeScreen),
+            **btn_style
+        ).pack(fill="x", pady=5)
+
+        tk.Button(
+            sidebar,
+            text="Focus",
+            command=lambda: self.show(FocusModeScreen),
+            **btn_style
+        ).pack(fill="x", pady=5)
+
+        tk.Button(
+            sidebar,
+            text="Stats",
+            command=lambda: self.show(StatsScreen),
+            **btn_style
+        ).pack(fill="x", pady=5)
+
+        # -------- SCREENS --------
         self.frames = {}
 
         for Screen in (HomeScreen, FocusModeScreen, StatsScreen):
@@ -46,7 +76,6 @@ class App:
         self.frames[screen].tkraise()
 
     def update_camera(self, frame):
-
         self.frames[FocusModeScreen].update_camera(frame)
 
     def update_score(self, score):
@@ -54,3 +83,4 @@ class App:
 
     def run(self):
         self.root.mainloop()
+

@@ -18,6 +18,7 @@ class FocusModeScreen(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
+        self.popup_open = False  # track popup state(to prevent spam)
 
         # ---------- TITLE ----------
         tk.Label(self, text="Focus Mode", font=("Helvetica", 20)).pack(pady=10)
@@ -119,7 +120,6 @@ class FocusModeScreen(tk.Frame):
         else:
             self.message_label.config(text="Great focus! Keep it up.")
 
-        self.update()
     
     # ---------- UPDATE CAMERA ----------
 
@@ -145,29 +145,30 @@ class FocusModeScreen(tk.Frame):
         self.camera_label.image = imgtk
 
     # ---------- BREAK SUGGESTION POPUP ----------
-    def show_break_popup(self):
-        popup = tk.Toplevel(self)
-        popup.title("Break Suggestion")
-        popup.geometry("300x150")
-
-        tk.Label(
-            popup,
-            text="You seem fatigued.\nTake a break?",
-            font=("Helvetica", 12)
-        ).pack(pady=20)
-
-        tk.Button(
-            popup,
-            text="Take Break",
-            command=popup.destroy
-        ).pack(side="left", padx=20, pady=10)
-
-        tk.Button(
-            popup,
-            text="Continue",
-            command=popup.destroy
-        ).pack(side="right", padx=20, pady=10)
-
+    def show_break_popup(self, streak=None): 
+        if self.popup_open: 
+            return 
+        self.popup_open = True 
+        popup = tk.Toplevel(self) 
+        popup.title("Break Suggestion") 
+        popup.geometry("320x160") 
+        message = "You seem fatigued.\nTake a break?" 
+            
+        if streak: 
+            message = f"You've been focused for {round(streak,1)} min.\nTake a break?" 
+                
+        tk.Label( 
+            popup, 
+            text=message, 
+            font=("Helvetica", 12) 
+                
+            ).pack(pady=20) 
+            
+        def close(): 
+            self.popup_open = False 
+            popup.destroy() 
+            tk.Button(popup, text="Take Break", command=close).pack(side="left", padx=20, pady=10) 
+            tk.Button(popup, text="Continue", command=close).pack(side="right", padx=20, pady=10)
 
 
     # ---------- BACK ----------

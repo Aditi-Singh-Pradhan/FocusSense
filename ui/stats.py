@@ -16,6 +16,7 @@ class StatsScreen(tk.Frame):
     def __init__(self, parent, controller):
         super().__init__(parent)
         self.controller = controller
+        plt.ion()  # interactive mode for live updates
 
         tk.Label(self, text="Stats", font=("Helvetica", 20)).pack(pady=10)
 
@@ -42,7 +43,7 @@ class StatsScreen(tk.Frame):
                     score = float(row["focus_score"])
 
                     if score > 60:
-                        daily_focus[date] += 0.5  # each log ~30 sec
+                        daily_focus[date] += 0.5  # 30 sec intervals = 0.5 hrs approx
 
         except FileNotFoundError:
             self.result_label.config(text="No data found")
@@ -56,7 +57,7 @@ class StatsScreen(tk.Frame):
         plt.plot(days, values, marker='o')
         plt.title("Weekly Focus Hours")
         plt.xlabel("Date")
-        plt.ylabel("Focus Time (hrs approx)")
+        plt.ylabel("Focus Time (mins approx)")
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.show()

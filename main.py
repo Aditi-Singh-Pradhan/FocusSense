@@ -43,7 +43,7 @@ def run_cv_loop(app):
             timer.update(focus_score)
 
             if timer.should_suggest_break(focus_score):
-                app.frames[FocusModeScreen].show_break_popup()
+                app.root.after(0, lambda: app.frames[FocusModeScreen].show_break_popup(timer.current_streak))
 
     finally:
         camera.stop()

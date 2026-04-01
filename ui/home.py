@@ -27,9 +27,8 @@ class HomeScreen(tk.Frame):
 
     def start_focus(self):
         subject = self.subject_var.get()
-        print("Selected subject:", subject)
 
-        self.controller.current_subject = subject  # 🔥 STORE GLOBALLY
+        self.controller.current_subject = subject  # STORE GLOBALLY
 
         from ui.focusmode import FocusModeScreen
         self.controller.show(FocusModeScreen)

@@ -16,21 +16,29 @@ class App:
         self.root.title("FocusSense")
         self.root.geometry("900x600")
 
-        self.current_subject = "General"   # default value
+        self.current_subject = "General"
+        self.current_screen = None  # track active screen
 
         # -------- MAIN LAYOUT --------
         main_frame = tk.Frame(self.root)
         main_frame.pack(fill="both", expand=True)
 
         # -------- SIDEBAR --------
-        sidebar = tk.Frame(main_frame, width=150, bg="#222")
-        sidebar.pack(side="left", fill="y")
+        self.sidebar = tk.Frame(main_frame, width=150, bg="#222")
+        self.sidebar.pack(side="left", fill="y")
+        self.sidebar.pack_propagate(False)  # lock width
 
         # -------- CONTENT AREA --------
         self.container = tk.Frame(main_frame)
         self.container.pack(side="right", fill="both", expand=True)
 
+        # allow resizing
+        self.container.grid_rowconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
+
         # -------- SIDEBAR BUTTONS --------
+        self.buttons = {}
+
         btn_style = {
             "fg": "white",
             "bg": "#222",
@@ -41,26 +49,19 @@ class App:
             "padx": 10
         }
 
-        tk.Button(
-            sidebar,
-            text="Home",
-            command=lambda: self.show(HomeScreen),
-            **btn_style
-        ).pack(fill="x", pady=5)
+        def add_button(name, screen):
+            btn = tk.Button(
+                self.sidebar,
+                text=name,
+                command=lambda: self.show(screen),
+                **btn_style
+            )
+            btn.pack(fill="x", pady=5)
+            self.buttons[screen] = btn
 
-        tk.Button(
-            sidebar,
-            text="Focus",
-            command=lambda: self.show(FocusModeScreen),
-            **btn_style
-        ).pack(fill="x", pady=5)
-
-        tk.Button(
-            sidebar,
-            text="Stats",
-            command=lambda: self.show(StatsScreen),
-            **btn_style
-        ).pack(fill="x", pady=5)
+        add_button("Home", HomeScreen)
+        add_button("Focus", FocusModeScreen)
+        add_button("Stats", StatsScreen)
 
         # -------- SCREENS --------
         self.frames = {}
@@ -73,7 +74,16 @@ class App:
         self.show(HomeScreen)
 
     def show(self, screen):
+        # raise frame
         self.frames[screen].tkraise()
+        self.current_screen = screen
+
+        # highlight active button
+        for scr, btn in self.buttons.items():
+            if scr == screen:
+                btn.config(bg="#444")
+            else:
+                btn.config(bg="#222")
 
     def update_camera(self, frame):
         self.frames[FocusModeScreen].update_camera(frame)
@@ -83,4 +93,5 @@ class App:
 
     def run(self):
         self.root.mainloop()
+
 

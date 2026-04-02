@@ -45,28 +45,26 @@ It watches how *you* actually focus — your patterns, your peak hours, your rea
 
 ```
 focussense/
-├── main.py                 # Entry point
+├── main.py
 ├── core/
-│   ├── session.py          # Session management & Pomodoro logic
-│   ├── behavior.py         # Focus score computation
-│   ├── alerts.py           # Notification triggers
-│   └── adaptive_timer.py   # ML-based timer adjustment
+│   ├── behavior.py
+│   └── adaptive_timer.py
 ├── vision/
-│   ├── camera.py           # Webcam capture (threaded)
-│   └── cv_engine.py        # MediaPipe face/eye analysis
+│   ├── camera.py
+│   └── cv_engine.py
 ├── tracker/
-│   └── activity.py         # Active app/window tracking
+│   └── activity.py
 ├── ml/
-│   ├── data_logger.py      # Logs signals to CSV
-│   └── predictor.py        # Attention pattern predictor
-    └── dataset/
-|           └── focus_log.csv
+│   └── cv_logger.py
 ├── ui/
-│   └── dashboard.py        # Live dashboard UI
-└── data/                   # Auto-created on first run
-    ├── sessions.csv
-    ├── focus_signals.csv
-    └── app_activity.csv
+│   ├── app.py
+│   ├── home.py
+│   ├── focusmode.py
+│   └── stats.py
+├── utils/
+│   └── config.py
+├── requirements.txt
+└── data/
 ```
 
 ---

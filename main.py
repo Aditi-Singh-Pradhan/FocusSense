@@ -2,7 +2,6 @@ import threading
 import time
 import cv2
 
-from ui import app
 from ui.focusmode import FocusModeScreen
 from vision.camera import Camera
 from vision.cv_engine import CVEngine
@@ -31,6 +30,9 @@ def run_cv_loop(app, timer):
             frame = cv2.flip(frame, 1)
 
             cv_data = cv_engine.process_frame(frame)
+
+            if cv_data is None:
+                continue
 
             category, score = activity_tracker.get_activity_score()
             activity_data = score

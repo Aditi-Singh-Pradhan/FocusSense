@@ -55,9 +55,9 @@ class StatsScreen(tk.Frame):
 
         plt.figure()
         plt.plot(days, values, marker='o')
-        plt.title("Weekly Focus Hours")
+        plt.title("Weekly Focus Time")
         plt.xlabel("Date")
-        plt.ylabel("Focus Time (mins approx)")
+        plt.ylabel("Focus Time (minutes)")
         plt.xticks(rotation=45)
         plt.tight_layout()
         plt.show()

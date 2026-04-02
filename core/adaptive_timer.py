@@ -7,10 +7,14 @@ Combines:
 """
 
 import time
+from utils.config import (
+    DEFAULT_AVG_SPAN, FOCUS_THRESHOLD, BREAK_COOLDOWN,
+    STREAK_EARLY_CUTOFF, STREAK_STRETCH, STREAK_HARD_LIMIT
+)
 
 
 class AdaptiveTimer:
-    def __init__(self, avg_span=12):
+    def __init__(self, avg_span=DEFAULT_AVG_SPAN):
         self.avg_span = avg_span
         self.current_streak = 0  # minutes
         self.focus_history = []
@@ -60,7 +64,7 @@ class AdaptiveTimer:
         self.last_update_time = now
 
         # track streak
-        if focus_score > 60:
+        if focus_score > FOCUS_THRESHOLD:
             self.current_streak += delta
         else:
             self.current_streak = 0
@@ -87,21 +91,21 @@ class AdaptiveTimer:
         now = time.time()
 
         # cooldown
-        if now - self.last_popup_time < 60:
+        if now - self.last_popup_time < BREAK_COOLDOWN:
             return False
 
-        stretch_limit = self.avg_span * 1.3
-        hard_limit = self.avg_span * 1.5
+        stretch_limit = self.avg_span * STREAK_STRETCH
+        hard_limit = self.avg_span * STREAK_HARD_LIMIT
 
         # don't trigger too early
-        if self.current_streak < self.avg_span * 0.7:
+        if self.current_streak < self.avg_span * STREAK_EARLY_CUTOFF:
             return False
 
         # fatigue detection
         if (
             self.current_streak > self.avg_span and
             self.is_declining() and
-            focus_score < 60   # slightly relaxed
+            focus_score < FOCUS_THRESHOLD   # slightly relaxed
         ):
             self.last_popup_time = now
             return True

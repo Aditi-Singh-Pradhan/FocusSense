@@ -5,6 +5,12 @@ Combines computer vision signals and app activity data
 to calculate a real-time focus score (0–100).
 """
 
+from utils.config import (
+    WEIGHT_FACE, WEIGHT_HEAD, WEIGHT_BLINK, WEIGHT_APP,
+    SMOOTHING_FACTOR, BLINK_SCALE
+)
+
+
 class BehaviorEngine:
     def __init__(self):
         self.prev_score = None
@@ -19,21 +25,21 @@ class BehaviorEngine:
 
         # ---- NORMALIZE BLINK ----
         # smaller eye opening → fatigue → lower score
-        blink_score = 1 - min(blink * 8, 1)   # scaled + clamped
+        blink_score = 1 - min(blink * BLINK_SCALE, 1)   # scaled + clamped
 
         # ---- RAW SCORE ----
         raw_score = (
-            face * 0.4 +
-            head * 0.3 +
-            blink_score * 0.2 +
-            app * 0.1
+            face * WEIGHT_FACE +
+            head * WEIGHT_HEAD +
+            blink_score * WEIGHT_BLINK +
+            app * WEIGHT_APP
         )
 
         # ---- SMOOTHING ----
         if self.prev_score is None:
             smoothed = raw_score
         else:
-            smoothed = 0.7 * self.prev_score + 0.3 * raw_score
+            smoothed = SMOOTHING_FACTOR * self.prev_score + (1 - SMOOTHING_FACTOR) * raw_score
 
         self.prev_score = smoothed
 

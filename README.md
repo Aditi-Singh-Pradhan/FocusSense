@@ -144,8 +144,8 @@ App Activity Tracker ───────────────────�
 - [x] Focus score computation
 - [x] CSV data logging
 - [x] Live dashboard
-- [ ] Alert system
-- [ ] Adaptive timer (rule-based)
+- [x] Alert system
+- [x] Adaptive timer (rule-based)
 - [ ] ML predictor (pattern-based)
 - [ ] Subject tagging
 - [ ] Session goals & completion rating

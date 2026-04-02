@@ -24,11 +24,11 @@ def run_cv_loop(app, timer):
         while True:
             frame = camera.get_frame()
             
-            #flip frame for mirror effect (optional)
-            frame = cv2.flip(frame, 1)
-
             if frame is None:
                 continue
+
+            #flip frame for mirror effect (optional)
+            frame = cv2.flip(frame, 1)
 
             cv_data = cv_engine.process_frame(frame)
 

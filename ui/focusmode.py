@@ -222,6 +222,7 @@ class FocusModeScreen(tk.Frame):
             self.popup_open = False 
             popup.destroy() 
             
+        popup.protocol("WM_DELETE_WINDOW", close)
         tk.Button(popup, text="Take Break", command=close).pack(side="left", padx=20, pady=10) 
         tk.Button(popup, text="Continue", command=close).pack(side="right", padx=20, pady=10)
 

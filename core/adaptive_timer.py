@@ -18,7 +18,41 @@ class AdaptiveTimer:
         self.last_popup_time = 0
         self.last_update_time = time.time()
 
+        self.running = False
+        self.start_time = None
+        self.elapsed = 0.0  # seconds
+
+    def start(self):
+        if self.running:
+            return
+        self.running = True
+        self.start_time = time.time()
+        self.last_update_time = self.start_time
+
+    def stop(self):
+        if not self.running:
+            return
+        self.elapsed += time.time() - self.start_time
+        self.start_time = None
+        self.running = False
+
+    def reset(self):
+        self.running = False
+        self.start_time = None
+        self.elapsed = 0.0
+        self.current_streak = 0
+        self.focus_history = []
+        self.last_update_time = time.time()
+
+    def get_elapsed_seconds(self):
+        if self.running and self.start_time is not None:
+            return self.elapsed + (time.time() - self.start_time)
+        return self.elapsed
+
     def update(self, focus_score):
+        if not self.running:
+            return
+
         now = time.time()
 
         # REAL delta time tracking (not just increments)

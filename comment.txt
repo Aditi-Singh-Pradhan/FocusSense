@@ -1,0 +1,3 @@
+check how much data is in ram and how much is not called
+how much needs to be loaded into ram
+

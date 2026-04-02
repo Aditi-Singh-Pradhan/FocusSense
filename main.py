@@ -13,10 +13,9 @@ from ml.cv_logger import CVLogger
 from core.adaptive_timer import AdaptiveTimer
 
 
-def run_cv_loop(app):
+def run_cv_loop(app, timer):
     camera = Camera().start()
     cv_engine = CVEngine()
-    timer = AdaptiveTimer(avg_span=12)  
     logger = CVLogger()
     activity_tracker = ActivityTracker()
     behavior_engine = BehaviorEngine()
@@ -24,6 +23,10 @@ def run_cv_loop(app):
     try:
         while True:
             frame = camera.get_frame()
+            
+            #flip frame for mirror effect (optional)
+            frame = cv2.flip(frame, 1)
+
             if frame is None:
                 continue
 
@@ -37,15 +40,35 @@ def run_cv_loop(app):
 
             logger.log(cv_data, focus_score, subject)
 
+            # UI updates must be done in the main thread
             app.update_camera(frame)
             app.update_score(focus_score)
 
-            timer.update(focus_score)
+            # adaptive timer logic (only while running)
+            if timer.running:
+                timer.update(focus_score)
 
-            if timer.should_suggest_break(focus_score):
-                app.root.after(0, lambda: app.frames[FocusModeScreen].show_break_popup(timer.current_streak))
+                if timer.should_suggest_break(focus_score):
+                    app.root.after(0, lambda: app.frames[FocusModeScreen].show_break_popup(timer.current_streak))
 
     finally:
         camera.stop()
         cv2.destroyAllWindows()
 
+
+def main():
+    print("Starting Focussense App...")
+
+    app = App()
+    timer = AdaptiveTimer(avg_span=12)
+
+    # wire timer into FocusMode screen
+    app.frames[FocusModeScreen].set_timer(timer)
+
+    threading.Thread(target=run_cv_loop, args=(app, timer), daemon=True).start()
+
+    # Start the UI main loop
+    app.run()
+
+if __name__ == "__main__":
+    main()

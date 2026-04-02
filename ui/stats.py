@@ -43,7 +43,7 @@ class StatsScreen(tk.Frame):
                     score = float(row["focus_score"])
 
                     if score > 60:
-                        daily_focus[date] += 0.5  # 30 sec intervals = 0.5 hrs approx
+                        daily_focus[date] += 0.5  # 30 sec intervals = 0.5 mins approx
 
         except FileNotFoundError:
             self.result_label.config(text="No data found")

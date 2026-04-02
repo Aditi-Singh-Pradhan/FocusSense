@@ -43,6 +43,23 @@ class FocusModeScreen(tk.Frame):
         )
         self.timer_label.grid(row=0, column=1, padx=10)
 
+        self.timer = None
+        self.timer_button = tk.Button(
+            top_frame,
+            text="Start Timer",
+            command=self.toggle_timer
+        )
+        self.timer_button.grid(row=1, column=1, pady=5)
+
+        self.reset_button = tk.Button(
+            top_frame,
+            text="Reset Timer",
+            command=self.reset_timer
+        )
+        self.reset_button.grid(row=2, column=1, pady=5)
+
+        self.update_timer_label()
+
         # ---------- FOCUS SCORE ----------
         self.score_label = tk.Label(
             self,
@@ -120,7 +137,44 @@ class FocusModeScreen(tk.Frame):
         else:
             self.message_label.config(text="Great focus! Keep it up.")
 
-    
+    # ---------- TIMER CONTROL ----------
+    def set_timer(self, timer):
+        self.timer = timer
+
+    def toggle_timer(self):
+        if not self.timer:
+            return
+
+        if self.timer.running:
+            self.timer.stop()
+            self.timer_button.config(text="Start Timer")
+            self.message_label.config(text="Timer stopped.")
+        else:
+            self.timer.start()
+            self.timer_button.config(text="Stop Timer")
+            self.message_label.config(text="Timer running.")
+
+    def reset_timer(self):
+        if not self.timer:
+            return
+
+        self.timer.reset()
+        self.timer_button.config(text="Start Timer")
+        self.message_label.config(text="Timer reset.")
+        self.update_timer_label()
+
+    def update_timer_label(self):
+        elapsed_secs = 0
+        if self.timer:
+            elapsed_secs = int(self.timer.get_elapsed_seconds())
+
+        mins = elapsed_secs // 60
+        secs = elapsed_secs % 60
+        self.timer_label.config(text=f"Timer: {mins:02d}:{secs:02d}")
+
+        # refresh periodically
+        self.after(500, self.update_timer_label)
+
     # ---------- UPDATE CAMERA ----------
 
     def update_camera(self, frame):
@@ -167,8 +221,9 @@ class FocusModeScreen(tk.Frame):
         def close(): 
             self.popup_open = False 
             popup.destroy() 
-            tk.Button(popup, text="Take Break", command=close).pack(side="left", padx=20, pady=10) 
-            tk.Button(popup, text="Continue", command=close).pack(side="right", padx=20, pady=10)
+            
+        tk.Button(popup, text="Take Break", command=close).pack(side="left", padx=20, pady=10) 
+        tk.Button(popup, text="Continue", command=close).pack(side="right", padx=20, pady=10)
 
 
     # ---------- BACK ----------

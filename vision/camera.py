@@ -26,6 +26,8 @@ class Camera:
         self.running = False
         self.lock = threading.Lock()
 
+        
+
     def start(self):
         #Start camera thread
         if self.running:
@@ -35,30 +37,39 @@ class Camera:
         self.thread = threading.Thread(target=self.update, daemon=True)
         self.thread.start()
 
-        #small warmup delay
+        #small warmup delay to allow camera to initialize
         time.sleep(0.5)
 
         return self
 
     def update(self):
         #Continuously capture frames
+
         while self.running:
+            
             ret, frame = self.cap.read()
             if not ret:
                 continue
 
-            with self.lock:
+            with self.lock:                 #safely update the latest frame by acquiring the lock that is used to synchronize access to the shared resource (the latest frame) between the camera thread and the main application thread. By acquiring the lock before updating the frame, we ensure that only one thread can access or modify the frame at a time, preventing
                 self.frame = frame
+
 
             #control frame rate (optional)
             time.sleep(0.03)   # ~30 FPS cap
+            
 
-    def get_frame(self):
+        
+
+    def get_frame(self):                  
         #Return latest frame safely
         with self.lock:
+
             if self.frame is None:
                 return None
+            
             return self.frame.copy()
+        
 
     def stop(self):
         #Stop camera safely

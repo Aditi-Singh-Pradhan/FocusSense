@@ -29,25 +29,28 @@ def run_cv_loop(app, timer):
             #flip frame for mirror effect (optional)
             frame = cv2.flip(frame, 1)
 
-            cv_data = cv_engine.process_frame(frame)
-
-            if cv_data is None:
-                continue
-
-            category, score = activity_tracker.get_activity_score()
-            activity_data = score
-
-            focus_score = behavior_engine.compute_focus_score(cv_data, activity_data)
-            subject = app.current_subject
-
-            logger.log(cv_data, focus_score, subject)
-
             # UI updates must be done in the main thread
             app.update_camera(frame)
-            app.update_score(focus_score)
 
-            # adaptive timer logic (only while running)
+            # only calculate focus score and track when timer is active
             if timer.running:
+                cv_data = cv_engine.process_frame(frame)
+
+                if cv_data is None:
+                    continue
+
+                category, score = activity_tracker.get_activity_score()
+                activity_data = score
+
+                focus_score = behavior_engine.compute_focus_score(cv_data, activity_data)
+                subject = app.current_subject
+
+                logger.log(cv_data, focus_score, subject)
+
+                # UI updates for focus score
+                app.update_score(focus_score)
+
+                # adaptive timer logic
                 timer.update(focus_score)
 
                 if timer.should_suggest_break(focus_score):

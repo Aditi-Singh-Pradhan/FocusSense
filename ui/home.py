@@ -15,7 +15,7 @@ class HomeScreen(tk.Frame):
         self.subject_var = tk.StringVar()
         self.subject_var.set("Math")
 
-        subjects = ["Math", "Chem", "Physics", "Coding"]
+        subjects = ["M2", "Chem", "Physics", "Coding", "ES", "Thermodynamics", "PnS", "other"]
 
         tk.OptionMenu(self, self.subject_var, *subjects).pack(pady=10)
 

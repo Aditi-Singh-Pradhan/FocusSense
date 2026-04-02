@@ -24,7 +24,7 @@ class CVEngine:
         results = self.face_mesh.process(rgb)
 
         if not results.multi_face_landmarks:
-            return {"face": 0, "head": 0, "blink": 0}
+            return None
 
         landmarks = results.multi_face_landmarks[0].landmark
 
